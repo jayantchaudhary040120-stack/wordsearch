@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Word Search Elite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <div id="game-area-wrapper">
+        <div id="settings-panel" class="hidden-screen fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+            <div class="glass w-full max-w-sm p-8 rounded-[40px] border border-white/20 max-h-[90vh] overflow-y-auto custom-scroll">
+                <h2 class="text-2xl font-black mb-6 text-center text-indigo-400 uppercase tracking-widest">Settings</h2>
+                
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl mb-8">
+                    <span class="font-bold">Sound Effects</span>
+                    <div onclick="toggleSFX()" id="sfx-toggle" class="toggle-btn on"></div>
+                </div>
+
+                <div class="text-center mb-8">
+                    <div class="inline-block px-3 py-1 bg-indigo-500/20 rounded-full text-[10px] font-black text-indigo-400 mb-4 uppercase">Lead Developer & Visionary</div>
+                    <p class="text-3xl font-black mb-2 tracking-tight uppercase">Jayant Chaudhary</p>
+                    <p class="text-sm text-white/70 leading-relaxed px-2">
+                        Specializing in modern UI/UX design, procedural algorithm generation, and high-performance web-based game engines. Dedicated to building engaging digital experiences within the storyteller_ai2.0 ecosystem.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <a href="https://whatsapp.com/channel/0029Vb7UVRH0gcfFA2aZIj3s" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl border border-green-500/30 bg-green-500/5 hover:bg-green-500/10 transition">
+                        <svg class="w-6 h-6 fill-green-500" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.406.836 2.946 1.285 4.527 1.285 4.815 0 8.732-3.917 8.735-8.732.001-2.333-.907-4.528-2.56-6.181-1.652-1.653-3.846-2.562-6.18-2.562-4.816 0-8.734 3.917-8.736 8.734-.001 1.705.492 3.334 1.425 4.755l-1.02 3.724 3.81-1.003z"/></svg>
+                        <div class="text-left"><p class="text-[10px] font-bold text-green-400 uppercase">WhatsApp</p><p class="text-sm font-black">Join official channel</p></div>
+                    </a>
+                    <a href="https://youtube.com/@storyteller_ai2.0?si=VinWR0qt09AuscvQ" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition">
+                        <svg class="w-6 h-6 fill-red-500" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <div class="text-left"><p class="text-[10px] font-bold text-red-400 uppercase">YouTube</p><p class="text-sm font-black">Subscribe to our channel</p></div>
+                    </a>
+                </div>
+
+                <button onclick="toggleSettings()" class="w-full mt-8 py-4 bg-white/10 rounded-2xl font-black uppercase tracking-widest hover:bg-white/20 transition">BACK TO MENU</button>
+            </div>
+        </div>
+
+        <div id="main-menu" class="w-full max-w-sm glass p-10 rounded-[50px] text-center relative">
+            <button onclick="toggleSettings()" class="absolute top-6 right-6 opacity-60 hover:opacity-100 transition hover:rotate-90">
+                <svg class="w-6 h-6 stroke-white fill-none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2 2.01 2.01 0 0 1-2.02 2 2 2 0 0 0-2 2 2.01 2.01 0 0 1-2 2.02 2 2 0 0 0-2 2v.44a2 2 0 0 0 2 2 2.01 2.01 0 0 1 2.02 2 2 2 0 0 0 2 2 2.01 2.01 0 0 1 2 2.02 2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2 2.01 2.01 0 0 1 2.02-2 2 2 0 0 0 2-2 2.01 2.01 0 0 1 2-2.02 2 2 0 0 0 2-2v-.44a2 2 0 0 0-2-2 2.01 2.01 0 0 1-2.02-2 2 2 0 0 0-2-2 2.01 2.01 0 0 1-2-2.02 2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <h1 class="text-7xl font-black tracking-tighter leading-none mb-10">WORD<br><span class="text-indigo-500">ELITE</span></h1>
+            <div class="space-y-4">
+                <button onclick="playContinue()" class="btn-juicy w-full py-6 rounded-3xl text-2xl font-black uppercase">Play Game</button>
+                <button onclick="showChapters()" class="w-full py-4 glass rounded-3xl font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition">Chapters</button>
+            </div>
+        </div>
+
+        <div id="level-screen" class="hidden-screen w-full max-w-xl glass p-8 rounded-[40px] flex flex-col">
+            <div class="flex items-center justify-between mb-6 shrink-0">
+                <button onclick="showMenu()" class="text-indigo-400 font-bold flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg> MENU
+                </button>
+                <h2 id="chapter-title" class="text-xl font-black uppercase tracking-tighter">Levels 1-100</h2>
+                <button id="next-page-btn" onclick="nextChapterPage()" class="text-indigo-400 font-bold flex items-center gap-2">
+                    NEXT <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+            <div id="level-grid" class="flex-grow grid grid-cols-4 sm:grid-cols-5 gap-3 overflow-y-auto pb-4 custom-scroll"></div>
+        </div>
+
+        <div id="game-screen" class="hidden-screen w-full max-w-2xl flex flex-col h-full">
+            <div class="glass p-4 rounded-3xl flex items-center justify-between mb-2">
+                <button onclick="showMenu()" class="hover:scale-110 transition">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </button>
+                <div class="text-center">
+                    <div id="lvl-badge" class="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Level 01</div>
+                    <div id="timer" class="text-xl font-bold font-mono">00:00</div>
+                </div>
+                <div id="score" class="text-2xl font-black text-pink-500">0</div>
+            </div>
+            <div id="word-bank" class="flex flex-wrap gap-2 justify-center py-4 shrink-0 overflow-y-auto max-h-32"></div>
+            <div class="flex-grow flex items-center justify-center min-h-0">
+                <div id="grid-box" class="p-1 select-none touch-none">
+                    <svg id="selection-svg" class="absolute inset-0 w-full h-full pointer-events-none z-10">
+                        <line id="drag-line" stroke="rgba(99, 102, 241, 0.2)" stroke-width="24" stroke-linecap="round" visibility="hidden" />
+                    </svg>
+                </div>
+            </div>
+            <div class="h-10 shrink-0"></div>
+        </div>
+
+        <div id="win-modal" class="hidden-screen fixed inset-0 z-[300] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-6 text-center">
+            <div class="glass w-full max-w-md p-10 rounded-[50px] border border-indigo-500/30">
+                <svg class="w-16 h-16 mx-auto mb-6 fill-yellow-500" viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.103 0-2 .897-2 2v3c0 2.505 1.679 4.631 4 5.307V19H5v2h14v-2h-2v-3.693c2.321-.676 4-2.802 4-5.307V7c0-1.103-.897-2-2-2zM5 10V7h2v3H5zm14 0h-2V7h2v3z"/></svg>
+                <h2 class="text-4xl font-black mb-6 uppercase tracking-tight">Level Clear!</h2>
+                <div class="bg-white/5 p-6 rounded-3xl mb-8 border border-white/10 text-left">
+                    <p class="text-[10px] font-black text-indigo-400 uppercase mb-2 tracking-widest">Did You Know?</p>
+                    <p id="fact-text" class="text-indigo-100 font-medium leading-relaxed"></p>
+                </div>
+                <button onclick="playContinue()" class="btn-juicy w-full py-5 rounded-3xl text-2xl font-black mb-4 uppercase">Next Level</button>
+                <button onclick="showMenu()" class="w-full py-2 text-white/30 font-bold hover:text-white transition uppercase text-xs">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
